@@ -1,0 +1,20 @@
+<div class="row border-bottom">
+    <nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <span minimaliza-sidebar></span>
+        </div>
+        <ul class="nav navbar-top-links navbar-right">
+            <li>
+                <button type="button" class="btn btn-success navbar-btn" onclick="window.location.href= '/#/people/students/new';"><i class="fa fa-user-plus"></i> Nuevo Alumno</button>
+            </li>
+            <li ng-controller="EnrollmentSwitcherCtrl">
+                <select chosen name="activeEnrollmentYear" ng-model="activeEnrollmentYear" ng-change="switch()" ng-options="option.id as option.name for option in schoolyears"></select>
+            </li>
+            <li>
+                <a ui-sref="logout">
+                    <i class="fa fa-sign-out"></i> Salir
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

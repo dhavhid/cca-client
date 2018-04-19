@@ -1,0 +1,52 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Usuarios</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a ui-sref="people">Personas</a></li>
+            <li class="active">Usuarios</li>
+        </ol>
+    </div>
+</div>
+<br />
+<action-buttons></action-buttons>
+<div app-message></div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th width="10"><check-all></check-all></th>
+                                    <th width="15%">C&oacute;digo</th>
+                                    <th width="30%">Nombre</th>
+                                    <th width="10">Tel&eacute;fono</th>
+                                    <th width="10">Email</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr dir-paginate="al in data | itemsPerPage: per_page" total-items="pagination.total" current-page="pagination.current_page">
+                                    <td><input type="checkbox" class="chk" name="sy_id" value="{{ al.id }}"></td>
+                                    <td><a ui-sref="people.usersupdate({id: al.id})">{{ al.code }}</a></td>
+                                    <td><a ui-sref="people.usersupdate({id: al.id})">{{ al.firstname }} <span ng-if="al.middlename.length > 0"> {{ al.middlename }}</span> {{ al.lastname }}</a></td>
+                                    <td>{{ al.phone }}</td>
+                                    <td>{{ al.email }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <dir-pagination-controls on-page-change="get(newPageNumber)"></dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

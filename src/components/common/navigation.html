@@ -1,0 +1,81 @@
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul side-navigation class="nav metismenu" id="side-menu">
+            <li class="nav-header" ng-controller="CurrentUserCtrl">
+                <div class="dropdown profile-element" dropdown>
+                    <span>
+                        <img ng-if="!user.hasProfilePicture" src="assets/images/logocca.png" width="47px" class="img-circle" alt="image">
+                        <img ng-if="user.hasProfilePicture" ng-src="{{ profilePicture }}" width="47px" class="img-circle" alt="image">
+                    </span>
+                    <a class="dropdown-toggle" dropdown-toggle href>
+                        <span class="clear">
+                            <span class="block m-t-xs">
+                                <strong class="font-bold">{{user.firstname}} {{ user.lastname }}</strong>
+                            </span>
+                            <span class="text-muted text-xs block">Colegio CA<b class="caret"></b></span>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                        <li><a ui-sref="people.usersupdate({id: user.id})">Mi Perfil</a></li>
+                        <li><a ui-sref="logout">Logout</a></li>
+                    </ul>
+                </div>
+                <div class="logo-element">
+                    <img src="/assets/images/logocca.png" width="47" align="center">
+                </div>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="people.paymentscontrol">
+                    <i class="fa fa-money"></i>
+                    <span class="nav-label">Control de Pagos</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="people.students">
+                    <i class="fa fa-users"></i>
+                    <span class="nav-label">Alumnos</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="reports.jslist">
+                    <i class="fa fa-file-pdf-o"></i>
+                    <span class="nav-label">Reportes</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a href="index.html">
+                    <i class="fa fa-table"></i>
+                    <span class="nav-label">Cat&aacute;logos</span>
+                    <span class="fa arrow"></span>
+                </a>
+                <ul class="nav nav-second-level collapse">
+                    <li><a ui-sref="catalogs.schoolyear">A&ntilde;o Escolar</a> </li>
+                    <li><a ui-sref="catalogs.year">Grados</a> </li>
+                    <li><a ui-sref="catalogs.section">Secciones</a> </li>
+                    <li><a ui-sref="catalogs.subject">Materias</a> </li>
+                    <li><a ui-sref="catalogs.plan">Planes de Pago</a> </li>
+                    <li><a ui-sref="catalogs.paymenttype">Formas de Pago</a> </li>
+                    <li><a ui-sref="catalogs.relationshiptype">Tipos de Relaci&oacute;n Familiar</a> </li>
+                    <li role="separator" class="divider"></li>
+                    <li><a ui-sref="catalogs.customfields">Campos Personalizados</a> </li>
+                    <li role="separator" class="divider"></li>
+                    <li><a ui-sref="catalogs.module">M&oacute;dulos</a> </li>
+                    <li><a ui-sref="catalogs.rol">Roles</a> </li>
+                    <li><a ui-sref="people.users">Usuarios</a> </li>
+                </ul>
+            </li>
+            <!--<li ui-sref-active="active">
+                <a ui-sref="people.tools">
+                    <i class="fa fa-cubes"></i>
+                    <span class="nav-label">Herramientas</span>
+                </a>
+            </li>-->
+            <li ui-sref-active="active">
+                <a ui-sref="people.settings">
+                    <i class="fa fa-cogs"></i>
+                    <span class="nav-label">Configuraci&oacute;n</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

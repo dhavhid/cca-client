@@ -1,0 +1,244 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Reportes</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a ui-sref="catalogs">Reportes</a></li>
+            <li class="active"><strong>{{ title }}</strong></li>
+        </ol>
+    </div>
+</div>
+<br />
+<form name="frmReport" ng-model="Report" novalidate>
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Opciones Generales</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label class="control-label">A&ntilde;o escolar <span>*</span></label>
+                        <select name="schoolyear" ng-model="Report.schoolyear" class="form-control" ng-options="option.id as option.name for option in schoolyears" required></select>
+                        <p class="help-block" ng-if="frmReport.schoolyear.$error.required">El a&ntilde;o escolar es obligatorio</p>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label class="control-label">Nombre del reporte <span>*</span></label>
+                        <input type="text" name="name" ng-model="Report.name" class="form-control" required>
+                        <p class="help-block" ng-if="frmReport.name.$error.required">El nombre del reporte es obligatorio</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label">Descripci&oacute;n</label>
+                        <textarea name="description" ng-model="Report.description" class="form-control" rows="2" style="resize: none;"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label class="control-label">Tipo de reporte <span>*</span></label>
+                        <select name="type" ng-model="Report.type" class="form-control" ng-change="setUpColumns();" ng-options="option.value as option.text for option in categories" required></select>
+                        <p class="help-block" ng-if="frmReport.type.$error.required">El tipo de reporte es obligatorio</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label class="control-label">Formato del reporte <span>*</span></label>
+                        <select name="display" ng-model="Report.display" class="form-control" ng-options="option.value as option.text for option in types" required></select>
+                        <p class="help-block" ng-if="frmReport.display.$error.required">El formato del reporte es obligatorio</p>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label class="control-label">Orientaci&oacute;n del reporte <span>*</span></label>
+                        <select name="layout" ng-model="Report.layout" class="form-control" ng-options="option.value as option.text for option in layout" required></select>
+                        <p class="help-block" ng-if="frmReport.layout.$error.required">La orientaci&oacute;n del reporte es obligatoria</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Campos</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6" style="text-align: right;">
+                    <label>Campos disponibles:</label>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6" style="text-align: left;">
+                    <label>Campos selecionados:</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6" style="text-align: right;">
+                    <div ui-sortable="sortableOptions" class="apps-container screen pull-right" style="max-height: 360px; overflow-x: auto;" ng-model="availableColumns">
+                        <div class="app" ng-repeat="field in availableColumns">{{field.text}}</div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6" style="text-align: left;">
+                    <div ui-sortable="sortableOptions" class="apps-container screen pull-left" ng-model="Report.selectedColumns">
+                        <div class="app" ng-repeat="field in Report.selectedColumns">{{field.text}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Filtros</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label class="control-label">Criterio para los filtros <span>*</span></label>
+                        <select name="filtertype" ng-model="Report.filtertype" class="form-control" ng-options="option.value as option.text for option in filtertypes" required></select>
+                        <p class="help-block" ng-if="frmReport.filtertype.$error.required">El criterio para los filtros del reporte es obligatorio</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-repeat="reportfilter in Report.filters">
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label>Borrar</label>
+                        <button type="button" class="btn btn-danger" ng-click="removeFilter($index);" title="Eliminar filtro"><i class="fa fa-trash"></i></button>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label class="control-label">Filtro <span>*</span></label>
+                        <select class="form-control" name="filter[{{ index }}]" ng-model="Report.filters[$index].filter" ng-options="option.value as option.text for option in filters" required></select>
+                        <p class="help-block" ng-if="frmReport.filter[$index].$error.required">El tipo de filtro es obligatorio</p>
+                    </div>
+                </div>
+                <div class="col-sm-2" ng-if="Report.filters[$index].filter.length > 0">
+                    <!-- show up conditions based on selected filter -->
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label class="control-label">Condici&oacute;n <span>*</span></label>
+                        <select class="form-control" name="condition[{{ index }}]" ng-model="Report.filters[$index].condition" ng-options="option.value as option.text for option in filtervalues[Report.filters[$index].filter].conditions" required></select>
+                        <p class="help-block" ng-if="frmReport.condition[$index].$error.required">La condici&oacute;n es obligatoria</p>
+                    </div>
+                </div>
+                <div class="col-sm-6" ng-if="Report.filters[$index].filter.length > 0">
+                    <div ng-if="Report.filters[$index].filter == 'paymenttype_id' || Report.filters[$index].filter == 'year_id' || Report.filters[$index].filter == 'section_id' || Report.filters[$index].filter == 'fee_date'">
+                        <div class="form-group" show-errors="{showSuccess: true}">
+                            <label class="control-label">Valor Buscado <span>*</span></label>
+                            <select chosen multiple class="form-control" name="value[{{ index }}]" ng-model="Report.filters[$index].value" ng-options="option.id as option.name for option in filtervalues[Report.filters[$index].filter].value" required></select>
+                        </div>
+                    </div>
+                    <div ng-if="Report.filters[$index].filter == 'student_id'">
+                        <div class="col-xs-4">
+                            <div class="form-group" show-errors="{showSuccess: true}">
+                                <label class="control-label">Grado <span>*</span></label>
+                                <select class="form-control" name="selector[{{ index }}]" ng-model="Report.filters[$index].selector" ng-change="getStudents(Report.filters[$index].selector);" ng-options="option.id as option.name for option in filtervalues[Report.filters[$index].filter].value" required></select>
+                            </div>
+                        </div>
+                        <div class="col-xs-8">
+                            <div class="form-group" show-errors="{showSuccess: true}">
+                                <label class="control-label">Valor Buscado <span>*</span></label>
+                                <select chosen multiple class="form-control" name="value[{{ index }}]" ng-model="Report.filters[$index].value" ng-options="option.id as option.name for option in students" required></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="Report.filters[$index].filter == 'payment_penalty' || Report.filters[$index].filter == 'gender' || Report.filters[$index].filter == 'payment_ontime'">
+                        <div class="form-group" show-errors="{showSuccess: true}">
+                            <label class="control-label">Valor Buscado <span>*</span></label>
+                            <select class="form-control" name="value[{{ index }}]" ng-model="Report.filters[$index].value" ng-options="option.value as option.text for option in filtervalues[Report.filters[$index].filter].value" required></select>
+                        </div>
+                    </div>
+                    <div ng-if="Report.filters[$index].filter == 'date_of_birth'">
+                        <div class="form-group" show-errors="{showSuccess: true}">
+                            <label class="control-label">Valor Buscado <span>*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                <input type="text" class="form-control yearpicker" year-picker name="value[{{ index }}]" ng-model="Report.filters[$index].value" required readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="Report.filters[$index].filter == 'city' || Report.filters[$index].filter == 'state'">
+                        <div class="form-group" show-errors="{showSuccess: true}">
+                            <label class="control-label">Valor Buscado <span>*</span></label>
+                            <select chosen multiple class="form-control" name="value[{{ index }}]" ng-model="Report.filters[$index].value" required>
+                                <option ng-repeat="option in filtervalues[Report.filters[$index].filter].value" value="{{ option }}">{{ option }}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <p class="help-block" ng-if="frmReport.value[$index].$error.required">El valor buscado es obligatorio</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1 col-xs-12">
+                    <button type="button" class="btn btn-success" ng-click="addFilter();">Agregar Filtro</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Ordenar por</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row" ng-repeat="reportsorting in Report.sorting">
+                <div class="col-sm-1">
+                    <div class="form-group">
+                        <label>Borrar</label>
+                        <button type="button" class="btn btn-danger" ng-click="removeSorting($index);" title="Eliminar criterio de ordenamiento"><i class="fa fa-trash"></i></button>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label class="control-label">Campo <span>*</span></label>
+                        <select class="form-control" name="sortBy[{{ index }}]" ng-model="Report.sorting[$index].sortBy" ng-options="option.value as option.text for option in Report.selectedColumns" required></select>
+                        <p class="help-block" ng-if="frmReport.sortBy[$index].$error.required">El campo de ordenamiento es obligatorio</p>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label class="control-label">Criterio <span>*</span></label>
+                        <select class="form-control" name="sortOrder[{{ index }}]" ng-model="Report.sorting[$index].sortOrder" ng-options="option.value as option.text for option in sorting" required></select>
+                        <p class="help-block" ng-if="frmReport.sortOrder[$index].$error.required">El criterio de ordenamiento es obligatorio</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1 col-xs-12">
+                    <button type="button" class="btn btn-success" ng-click="addSorting();">Agregar Criterio</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>Agrupar por</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="control-label">Campo(s) <span>*</span></label>
+                        <select placeholderTextMultiple="Seleccione alguna opcion" chosen multiple class="form-control" name="groupBy[{{ index }}]" ng-model="Report.groupby" ng-options="option.value as option.text for option in Report.selectedColumns"></select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" ng-click="save();"><i class="fa fa-save"></i> Guardar</button>
+                        <a ui-sref="reports.listparams({year_id: Report.schoolyear, report_id: reportId})" class="btn btn-success"><i class="fa fa-eye"></i> Ver Reporte</a>
+                        <a ui-sref="reports.list" class="btn btn-default">Cancelar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<br /><br />

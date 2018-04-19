@@ -1,0 +1,82 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Herramientas</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li class="active">Herramientas</li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>Promoci&oacute;n Autom&aacute;tica</h5>
+    </div>
+    <div class="ibox-content">
+        <div app-forminfo></div>
+        <div app-message></div>
+        <form name="frmPromotion" ng-model="Promotion" class="form-horizontal" novalidate>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Seleccione los elementos a promocionar <span>*</span></label>
+                <div class="col-sm-9">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="students" name="students" ng-model="Promotion.students" tabindex="1" value="1">
+                            Alumnos
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" value="students" name="paymentplans" ng-model="Promotion.paymentplans" tabindex="2" value="1">
+                            Planes de Pago
+                        </label>
+                    </div>
+                    <br />
+                    <p>Seleccione al menos un elemento a promocionar.<br />Los alumnos que ya estén matriculados en el a&ntilde;o de promoci&oacute;n ser&aacute;n ignorados.</p>
+                </div>
+            </div>
+            <div class="form-group" show-errors="{showSuccess: true}">
+                <label class="col-sm-3 control-label">A&ntilde;o a promocionar <span>*</span></label>
+                <div class="col-sm-9">
+                    <select name="enrollment_year_id" ng-model="Promotion.enrollment_year_id" ng-options="enrollmentyear.id as enrollmentyear.name for enrollmentyear in enrollmentyears" class="form-control" tabindex="3" required></select>
+                    <p class="help-block" ng-if="frmPromotion.enrollment_year_id.$error.required">El a&ntilde;o escolar a promocionar es obligatorio</p>
+                    <p>Seleccione el a&ntilde;o escolar de promoci&oacute;n, este debe ser superior al a&ntilde;o en curso.</p>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <div class="col-sm-9 col-sm-offset-3">
+                    <button type="button" class="btn btn-success" ng-click="save();"><i class="fa fa-save"></i> Promocionar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>Generar Talonarios</h5>
+    </div>
+    <div class="ibox-content">
+        <div app-forminfo></div>
+        <div app-message></div>
+        <form name="frmTalonarios" ng-model="Talonarios" class="form-horizontal" novalidate>
+            <div class="form-group" show-errors="{showSuccess: true}">
+                <label class="col-sm-3 control-label">A&ntilde;o escolar que desea generar talonarios <span>*</span></label>
+                <div class="col-sm-9">
+                    <select name="enrollment_year_id" ng-model="Talonarios.enrollment_year_id" ng-options="enrollmentyear.id as enrollmentyear.name for enrollmentyear in enrollmentyears" class="form-control" tabindex="3" required></select>
+                    <p class="help-block" ng-if="frmTalonarios.enrollment_year_id.$error.required">El a&ntilde;o escolar para el que desea generar talonarios es obligatorio</p>
+                    <p>Seleccione el a&ntilde;o escolar para el que desea generar los talonarios.</p>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <div class="col-sm-9 col-sm-offset-3">
+                    <button type="button" class="btn btn-success" ng-click="generarTalonarios();"><i class="fa fa-save"></i> Generar Talonarios</button>
+                    <button type="button" class="btn btn-primary" ng-click="getExcel();"><i class="fa fa-file-excel-o"></i> Reporte de Talonarios</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<br /><br />

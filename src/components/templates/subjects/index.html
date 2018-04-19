@@ -1,0 +1,44 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Materias</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a href="/catalogs">Cat&aacute;logos</a></li>
+            <li class="active">Materias</li>
+        </ol>
+    </div>
+</div>
+<br />
+<action-buttons></action-buttons>
+<div app-message></div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th width="10"><check-all></check-all></th>
+                            <th>Nombre</th>
+                            <th>Descripci&oacute;n</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr dir-paginate="sy in data | itemsPerPage: per_page" total-items="pagination.total" current-page="pagination.current_page">
+                            <td><input type="checkbox" class="chk" name="sy_id" value="{{ sy.id }}"></td>
+                            <td><a ui-sref="catalogs.subjectupdate({id: sy.id})">{{ sy.name }}</a></td>
+                            <td>{{ sy.description }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <dir-pagination-controls on-page-change="get(newPageNumber)"></dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

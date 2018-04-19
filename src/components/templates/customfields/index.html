@@ -1,0 +1,50 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Campos Personalizados</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a href="/catalogs">Cat&aacute;logos</a></li>
+            <li class="active">Campos Personalizados</li>
+        </ol>
+    </div>
+</div>
+<br />
+<action-buttons></action-buttons>
+<div app-message></div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th width="10"><i class="fa fa-sort-numeric-asc"></i></th>
+                            <th width="10"><check-all></check-all></th>
+                            <th>Etiqueta</th>
+                            <th>Tipo de Campo</th>
+                            <th>Aplica a</th>
+                            <th>Obligatorio</th>
+                        </tr>
+                        </thead>
+                        <tbody ui-sortable="sortableOptions" ng-model="data">
+                        <tr dir-paginate="sy in data | itemsPerPage: per_page" total-items="pagination.total" current-page="pagination.current_page">
+                            <td><i class="fa fa-reorder draggable"></i></td>
+                            <td><input type="checkbox" class="chk" name="sy_id" value="{{ sy.id }}"></td>
+                            <td><a ui-sref="catalogs.customfieldsupdate({id: sy.id})">{{ sy.label }}</a></td>
+                            <td><transform-custom-field-type value="{{ sy.type }}"></transform-custom-field-type></td>
+                            <td>{{ sy.persontype }}</td>
+                            <td><span class="label label-primary" ng-if="sy.required">Obligatorio</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <dir-pagination-controls on-page-change="get(newPageNumber)"></dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

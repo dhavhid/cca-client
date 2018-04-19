@@ -1,0 +1,93 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Alumnos</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a ui-sref="people">Personas</a></li>
+            <li><a ui-sref="people.students">Alumnos</a></li>
+            <li><a ui-sref="people.studentsupdate({id: Person.id})">{{ Person.firstname }} {{ Person.lastname }}</a></li>
+            <li class="active"><strong>{{ activeTitle }}</strong></li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="tabs-container">
+    <ul class="nav nav-tabs">
+        <li><a ui-sref="people.studentsupdate({id: Person.id})">Perfil</a></li>
+        <li>
+            <a ui-sref="people.studentsrelatives({id: Person.id})" ng-if="Person.id">Familiares</a>
+        </li>
+        <li class="active"><a>Matr&iacute;cula</a></li>
+        <li><a ui-sref="people.studentspayment({id: Person.id})">Pagos</a></li>
+        <li><a ui-sref="people.expedient({id: Person.id})" ng-if="Person.id">Expediente</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="person">
+            <div class="panel-body">
+                <div app-forminfo></div>
+                <div app-message></div>
+                <form name="frmEnrollment" ng-model="Enrollment" novalidate>
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Ficha</legend>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group" show-errors="{showSuccess: true}">
+                                    <label>A&ntilde;o de Matr&iacute;cula <span>*</span></label>
+                                    <select name="enrollment_year_id" ng-model="Enrollment.enrollment_year_id" ng-options="enrollmentyear.id as enrollmentyear.name for enrollmentyear in enrollmentyears" class="form-control" ng-change="loadEnrollment();" tabindex="1" required></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>No. de Talonario</label>
+                                    <input type="text" name="talonario" ng-model="Enrollment.talonario" class="form-control" tabindex="2">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group" show-errors="{showSuccess: true}">
+                                    <label>Fecha de matr&iacute;cula <span>*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                        <input type="text" name="date_of_enrollment" ng-model="Enrollment.date_of_enrollment" date-picker class="form-control datepicker" tabindex="3" readonly required>
+                                    </div>
+                                    <p class="help-block" ng-if="frmEnrollment.date_of_enrollment.$error.required">La fecha de matr&iacute;cula es obligatoria</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group" show-errors="{showSuccess: true}">
+                                    <label>Grado <span>*</span></label>
+                                    <select name="year_id" ng-model="Enrollment.year_id" class="form-control" ng-options="year.id as year.name for year in years" tabindex="4" required></select>
+                                    <p class="help-block" ng-if="frmEnrollment.year_id.$error.required">El grado es obligatorio</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label>Secci&oacute;n</label>
+                                    <select name="section_id" ng-model="Enrollment.section_id" class="form-control" ng-options="section.id as section.name for section in sections" tabindex="5"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12 col-xs-12">
+                                <div class="form-group">
+                                    <label>Responsable</label>
+                                    <select name="parent_id" class="form-control" ng-model="Enrollment.parent_id" ng-options="parent.id as parent.name for parent in relatives" tabindex="6"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" ng-click="save();"><i class="fa fa-save"></i> Guardar</button>
+                        <a ui-sref="people.students" class="btn btn-default">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br /><br />
+<br />

@@ -1,0 +1,134 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Alumnos</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a ui-sref="people">Personas</a></li>
+            <li><a ui-sref="people.students">Alumnos</a></li>
+            <li><a ui-sref="people.studentsupdate({id: Person.id})">{{ Person.firstname }} {{ Person.lastname }}</a></li>
+            <li class="active"><strong>Pagos</strong></li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="tabs-container">
+    <ul class="nav nav-tabs">
+        <li><a ui-sref="people.studentsupdate({id: Person.id})">Perfil</a></li>
+        <li><a ui-sref="people.studentsrelatives({id: Person.id})" ng-if="Person.id">Familiares</a></li>
+        <li><a ui-sref="people.studentsenrollment({id: Person.id})">Matr&iacute;cula</a></li>
+        <li class="active"><a>Pagos</a></li>
+        <li><a ui-sref="people.expedient({id: Person.id})" ng-if="Person.id">Expediente</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="relatives">
+            <div class="panel-body">
+                <div app-message></div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <fieldset>
+                            <legend>Colegiaturas Pendientes</legend>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th width="35%">Colegiatura</th>
+                                        <th width="35%">Valor</th>
+                                        <th width="30%">Opci&oacute;n</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="payment in pending">
+                                        <td>{{ payment.name }}</td>
+                                        <td>{{ payment.value | currency:"USD $":2 }}</td>
+                                        <td><input ng-if="payment.showPaymentOpt" type="button" class="btn btn-primary" ng-click="pay(payment.id);" value="Pagar"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <fieldset>
+                            <legend>Colegiaturas Pagadas</legend>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th width="30%">Colegiatura</th>
+                                        <th width="20%">Valor Cuota</th>
+                                        <th width="20%">Valor Cancelado</th>
+                                        <th width="30%">Opci&oacute;n</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="payment in payed">
+                                        <td>{{ payment.name }}</td>
+                                        <td>
+                                            {{ payment.base | currency:"USD $":2 }}<br />
+                                            <small><em>
+                                                <font color="blue">({{ payment.discount }})</font>
+                                            </em></small>
+                                        </td>
+                                        <td>
+                                            <strong>{{ payment.valuePayed | currency:"USD $":2 }}</strong><br />
+                                            <small><em>
+                                                {{ payment.dateOfPayment }}<br />
+                                                {{ payment.payment_type_name }}<br />
+                                                <font color="red">({{ payment.penalty | currency:"USD $":2 }})</font>
+                                            </em></small>
+                                        </td>
+                                        <td><input ng-if="payment.showDeleteOpt" type="button" class="btn btn-danger" value="Deshacer Pago" ng-click="deletePayment(payment.paymentId)"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br /><br />
+<br />
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{ payment_title }}</h4>
+            </div>
+            <div class="modal-body">
+                <form name="frmPaymentStudent" novalidate>
+                    <input type="hidden" name="enrollment_id" ng-model="PaymentStudent.enrollment_id">
+                    <input type="hidden" name="fee_id" ng-model="PaymentStudent.fee_id">
+                    <input type="hidden" name="value" ng-model="PaymentStudent.value">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label>Fecha de Pago <span>*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                            <input type="text" readonly required name="date_of_payment" ng-model="PaymentStudent.date_of_payment" class="form-control datepicker" date-picker>
+                        </div>
+                        <p class="help-block" ng-if="frmPaymentStudent.date_of_payment.$error.required">La fecha de pago es obligatoria.</p>
+                    </div>
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label>Forma de Pago <span>*</span></label>
+                        <select name="payment_type_id" ng-model="PaymentStudent.payment_type_id" class="form-control" ng-options="paymenttype.id as paymenttype.name for paymenttype in paymenttypes" required></select>
+                        <p class="help-block" ng-if="frmPaymentStudent.payment_type_id.$error.required">El tipo de pago es obligatorio.</p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-success" ng-click="save(1);">Aceptar & Control de Pagos</button>
+                <button type="button" class="btn btn-primary" ng-click="save(0);">Aceptar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

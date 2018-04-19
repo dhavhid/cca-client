@@ -1,0 +1,55 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Configuraci&oacute;n</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li class="active">Configuraci&oacute;n</li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>Actualizar Configuraci&oacute;n</h5>
+    </div>
+    <div class="ibox-content">
+        <div app-forminfo></div>
+        <div app-message></div>
+        <form name="frmSetting" ng-model="Setting" class="form-horizontal" novalidate>
+            <div class="form-group" show-errors="{showSuccess: true}">
+                <label class="col-sm-3 control-label">Registros por p&aacute;gina <span>*</span></label>
+                <div class="col-sm-9">{{ frmSetting.per_page }}
+                    <input-number name="per_page" ng-model="Setting.per_page" min="10" max="50" required></input-number>
+                    <p class="help-block" ng-if="frmSetting.per_page.$error.required">El n&uacute;mero de registros por p&aacute;gina es obligatorio</p>
+                    <p class="help-block" ng-if="frmSetting.per_page.$error.min">El n&uacute;mero de registros por p&aacute;gina debe ser mayor &oacute; igual a 10</p>
+                    <p class="help-block" ng-if="frmSetting.per_page.$error.max">El n&uacute;mero de registros por p&aacute;gina debe ser menor &oacute; igual a 50</p>
+                    <p>El n&uacute;mero de registros por p&aacute;gina debe ser mayor &oacute; igual a 10 y menor &oacute; igual a 50</p>
+                </div>
+            </div>
+            <div class="form-group" show-errors="{showSuccess: true}">
+                <label class="col-sm-3 control-label">Porcentage por sobrecargo <span>*</span></label>
+                <div class="col-sm-9">
+                    <input-float name="overdue_percentage" ng-model="Setting.overdue_percentage" min="0" max="100" class="form-control" required></input-float>
+                    <p class="help-block" ng-if="frmSetting.overdue_percentage.$error.required">El porcentage por sobrecargo es obligatorio</p>
+                    <p class="help-block" ng-if="frmSetting.overdue_percentage.$error.min">El porcentage debe ser mayor &oacute; igual a 0</p>
+                    <p class="help-block" ng-if="frmSetting.overdue_percentage.$error.max">El porcentage debe ser menor &oacute; igual a 100</p>
+                    <p>El porcentage debe ser mayor &oacute; igual a 0 y menor o &oacute; igual a 100</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Campos para b&uacute;squeda en control de pagos</label>
+                <div class="col-sm-9">
+                    <select chosen multiple name="search_fields" ng-model="Setting.search_fields" class="form-control" ng-options="option.name as option.label for option in Customfields"></select>
+                    <p>Estos campos ser&aacute;n utilizados adicionalmente al c&oacute;digo del alumno para b&uacute;squeda en el control de pagos.</p>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <div class="col-sm-9 col-sm-offset-3">
+                    <button type="button" class="btn btn-primary" ng-click="save();"><i class="fa fa-save"></i> Guardar</button>
+                    <a ui-sref="people.settings" class="btn btn-default">Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

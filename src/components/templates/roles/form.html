@@ -1,0 +1,50 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Roles</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a ui-sref="catalogs">Cat&aacute;logos</a></li>
+            <li><a ui-sref="catalogs.rol">Roles</a></li>
+            <li class="active">{{ activeTitle }}</li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>{{ activeTitle }} Rol</h5>
+    </div>
+    <div class="ibox-content">
+        <div app-forminfo></div>
+        <div app-message></div>
+        <form name="frmRol" ng-model="Rol" class="form-horizontal" novalidate>
+            <div class="form-group" show-errors="{showSuccess: true}">
+                <label class="col-sm-3 control-label">Nombre <span>*</span></label>
+                <div class="col-sm-9">
+                    <input type="text" name="name" ng-model="Rol.name" class="form-control" required>
+                    <p class="help-block" ng-if="frmRol.name.$error.required">El nombre es obligatorio</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Acceso a m&oacute;dulos <span>*</span></label>
+                <div class="col-sm-9">
+                    <select name="ModuleRol" ng-model="ModuleRol" chosen multiple ng-options="option.id as option.name for option in Modules" required></select>
+                    <p class="help-block" ng-if="frmRol.ModuleRol.$error.required">Por favor seleccione por lo menos un m&oacute;dulo.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Descripci&oacute;n</label>
+                <div class="col-sm-9">
+                    <input type="text" ng-model="Rol.description" class="form-control">
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <div class="col-sm-9 col-sm-offset-3">
+                    <button type="button" class="btn btn-primary" ng-click="save();"><i class="fa fa-save"></i> Guardar</button>
+                    <a ui-sref="catalogs.rol" class="btn btn-default">Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<!--<ul class="list-group elements-list" ng-controller="ReportsListCtrl">
+    <li class="list-group-item">
+        <div class="input-group">
+            <input type="text" class="form-control" ng-model="keywords" aria-label="" placeholder="buscar">
+            <div class="input-group-btn">
+                <button type="button" class="btn btn-primary" ng-click="createReport();"><i class="fa fa-plus"></i> </button>
+            </div>
+        </div>
+    </li>
+    <li class="list-group-item" ng-repeat="report in reports | filter:{name: keywords}">
+        <a data-toggle="tab" ng-click="loadReport(report.id)">
+            <small class="pull-right text-muted"> {{ report.enrollmentYearName }}</small>
+            <i class="fa fa-file-pdf-o"></i>
+            <br />
+            <strong>{{ report.name }}</strong>
+            <div class="small m-t-xs">
+                <p>{{ report.description }}</p>
+            </div>
+        </a>
+    </li>
+</ul>-->
+<select chosen class="form-control" name="selectedReport" ng-model="selectedReport" ng-options="option.id as option.name for option in reports" required></select>

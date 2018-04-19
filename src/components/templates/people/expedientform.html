@@ -1,0 +1,105 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2 ng-if="isStudent">Alumnos</h2>
+        <h2 ng-if="!isStudent">Usuarios</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a ui-sref="people">Personas</a></li>
+            <li ng-if="isStudent"><a ui-sref="people.students">Alumnos</a></li>
+            <li ng-if="!isStudent"><a ui-sref="people.users">Usuarios</a></li>
+            <li ng-if="isStudent"><a ui-sref="people.studentsupdate({id: Person.id})">{{ nombrePersona }}</a></li>
+            <li ng-if="!isStudent"><a ui-sref="people.usersupdate({id: Person.id})">{{ nombrePersona }}</a></li>
+            <li class="active"><strong>{{ activeTitle }}</strong></li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="tabs-container">
+    <ul class="nav nav-tabs">
+        <li ng-if="isStudent"><a ui-sref="people.studentsupdate({id: Person.id})">Perfil</a></li>
+        <li ng-if="isStudent">
+            <a ui-sref="people.studentsrelatives({id: Person.id})" ng-if="Person.id">Familiares</a>
+            <a ng-if="Person.id == undefined || Person.id == null">Familiares</a>
+        </li>
+        <li ng-if="isStudent">
+            <a ui-sref="people.studentsenrollment({id: Person.id})" ng-if="Person.id">Matr&iacute;cula</a>
+            <a ng-if="Person.id == undefined || Person.id == null">Matr&iacute;cula</a>
+        </li>
+        <li ng-if="isStudent">
+            <a ui-sref="people.studentspayment({id: Person.id})" ng-if="Person.id">Pagos</a>
+            <a ng-if="Person.id == undefined || Person.id == null">Pagos</a>
+        </li>
+        <li ng-if="!isStudent"><a ui-sref="people.usersupdate({id: Person.id})">Perfil</a></li>
+        <li class="active"><a>Expediente</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="person">
+            <div class="panel-body">
+                <div app-forminfo></div>
+                <div app-message></div>
+                <form name="frmExpedient" ng-model="Expedient" novalidate>
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Datos Generales</legend>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" show-errors="{showSuccess: true}">
+                                    <label class="control-label">T&iacute;tulo <span>*</span></label>
+                                    <input type="text" name="subject" ng-model="Expedient.subject" class="form-control" tabindex="1" required>
+                                    <p class="help-block" ng-if="frmExpedient.subject.$error.required">El t&iacute;tulo es obligatorio</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group" show-errors="{showSuccess: true}">
+                                    <label class="control-label">Lugar del Incidente <span>*</span></label>
+                                    <input type="text" name="location" ng-model="Expedient.location" class="form-control" tabindex="2" required>
+                                    <p class="help-block" ng-if="frmExpedient.location.$error.required">El lugar del incidente es obligatorio</p>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group" show-errors="{showSuccess: true}">
+                                    <label class="control-label">Fecha del Incidente <span>*</span></label>
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                        <input type="text" name="date_of_event" ng-model="Expedient.date_of_event" placeholder="dd/mm/aaaa" class="form-control" tabindex="3" required>
+                                    </div>
+                                    <span class="label label-primary">dia/mes/a&ntilde;o</span>
+                                    <p class="date_of_event-error-message" style="display:none;">La fecha del incidente debe tener el formato: dia/mes/a&ntilde;o.</p>
+                                    <p class="help-block" ng-if="frmExpedient.date_of_event.$error.required">La fecha del incidente es obligatorio</p>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <br />
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Detalles del Incidente</legend>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label">Descripci&oacute;n</label>
+                                    <summernote config="summernoteoptions" ng-model="Expedient.description"></summernote>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label">Acuerdos/Observaciones</label>
+                                    <summernote config="summernoteoptions" ng-model="Expedient.event_result"></summernote>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary btn-save" ng-click="save();"><i class="fa fa-save"></i> Guardar</button>
+                        <a ui-sref="people.expedient({id: personId})" class="btn btn-default">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br /><br />
+<br />

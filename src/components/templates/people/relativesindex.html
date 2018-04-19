@@ -1,0 +1,177 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Alumnos</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a ui-sref="people">Personas</a></li>
+            <li><a ui-sref="people.students">Alumnos</a></li>
+            <li><a ui-sref="people.studentsupdate({id: Person.id})">{{ activeTitle }}</a></li>
+            <li class="active"><strong>Familiares</strong></li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="tabs-container">
+    <ul class="nav nav-tabs">
+        <li><a ui-sref="people.studentsupdate({id: Person.id})">Perfil</a></li>
+        <li class="active"><a>Familiares</a></li>
+        <li><a ui-sref="people.studentsenrollment({id: Person.id})">Matr&iacute;cula</a></li>
+        <li><a ui-sref="people.studentspayment({id: Person.id})">Pagos</a></li>
+        <li><a ui-sref="people.expedient({id: Person.id})" ng-if="Person.id">Expediente</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="relatives">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 visible-xs">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-primary" ng-click="addNew();"><i class="fa fa-plus"></i></button>
+                            <button type="button" class="btn btn-default" ng-click="openModal();"><i class="fa fa-group"></i></button>
+                            <button type="button" class="btn btn-default" ng-click="toPrint();"><i class="fa fa-print"></i></button>
+                            <button type="button" class="btn btn-default" ng-click="toTrash();"><i class="fa fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 hidden-xs">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-primary" ng-click="addNew();"><i class="fa fa-plus"></i> Nuevo</button>
+                            <button type="button" class="btn btn-default" ng-click="openModal();"><i class="fa fa-user-plus"></i> Hermanos</button>
+                            <button type="button" class="btn btn-default" ng-click="toPrint();"><i class="fa fa-print"></i> Imprimir</button>
+                            <button type="button" class="btn btn-default" ng-click="toTrash();"><i class="fa fa-trash"></i> Eliminar</button>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                        <form>
+                            <div class="input-group">
+                                <input type="text" name="keywords" id="keywords" class="form-control" value="" placeholder="buscar...">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default hidden-xs" ng-click="search();">Buscar</button>
+                                    <button class="btn btn-default visible-xs" ng-click="search();"><i class="fa fa-search"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div><br/>
+                <div app-message></div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <fieldset>
+                            <legend>Familiares</legend>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th width="10"><check-all></check-all></th>
+                                        <th width="15%">C&oacute;digo</th>
+                                        <th width="20%">Nombre</th>
+                                        <th>Parentesco</th>
+                                        <th>Tel&eacute;fono</th>
+                                        <th>Direcci&oacute;n</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr dir-paginate="relative in Relatives | itemsPerPage: per_page" total-items="pagination.total" current-page="pagination.current_page">
+                                        <td><input type="checkbox" class="chk" name="sy_id" value="{{ relative.relationship_id }}"></td>
+                                        <td><a ui-sref="people.studentsrelativesupdate({referral_id: relative.id, id: Person.id})">{{relative.code}}</a></td>
+                                        <td><a ui-sref="people.studentsrelativesupdate({referral_id: relative.id, id: Person.id})">{{ relative.firstname }} <span ng-if="relative.middlename.length > 0"> {{ relative.middlename }}</span> {{ relative.lastname }}</a></td>
+                                        <td>{{ relative.relationship_name }}</td>
+                                        <td>{{ relative.phone }}</td>
+                                        <td>{{ relative.address1 }}<span ng-if="relative.address2.length > 0"> {{ relative.address2 }}</span>, {{ relative.city }}, {{ relative.state }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+                <div class="row" ng-if="Siblings.length > 0">
+                    <div class="col-lg-12">
+                        <fieldset>
+                            <legend>Hermanos</legend>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th width="10"></th>
+                                            <th width="15%">C&oacute;digo</th>
+                                            <th width="20%">Nombre</th>
+                                            <th>Grado</th>
+                                            <th>Secci&oacute;n</th>
+                                            <th>Tel&eacute;fono</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="sibling in Siblings">
+                                            <td>&nbsp;</td>
+                                            <td><a ui-sref="people.studentspayment({id: sibling.id})">{{ sibling.code }}</a></td>
+                                            <td><a ui-sref="people.studentspayment({id: sibling.id})">{{ sibling.lastname }}, {{ sibling.firstname }} <span ng-if="sibling.middlename.length > 0"> {{ sibling.middlename }}</span></a></td>
+                                            <td>{{sibling.year_name}}</td>
+                                            <td>{{sibling.section_name}}</td>
+                                            <td>{{sibling.phone}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br /><br />
+<br />
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Buscar Hermanos</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form>
+                            <div class="input-group">
+                                <input type="text" name="kw" id="kw" class="form-control" value="" placeholder="buscar...">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" ng-click="searchStudent();">Buscar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-condensed table-hover">
+                                <thead>
+                                <tr>
+                                    <th width="20%"></th>
+                                    <th width="15%">C&oacute;digo</th>
+                                    <th width="50%">Nombre</th>
+                                    <th width="15%">Grado</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="item in siblings">
+                                    <td><button type="button" class="btn btn-success" ng-click="getRelativesByStudent(item.id);">Vincular</button> </td>
+                                    <td>{{ item.code }}</td>
+                                    <td>
+                                        {{ item.lastname }}, {{ item.firstname }} <span ng-if="item.middlename">{{ item.middlename }}</span>
+                                    </td>
+                                    <td>{{ item.year_name }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

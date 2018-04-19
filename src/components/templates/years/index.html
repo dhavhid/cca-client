@@ -1,0 +1,53 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Grados</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a href="/catalogs">Cat&aacute;logos</a></li>
+            <li class="active">Grados</li>
+        </ol>
+    </div>
+</div>
+<br />
+<action-buttons></action-buttons>
+<div app-message></div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-info">
+            <p><strong>Instrucciones:</strong> Arrastre y suelte el &iacute;cono <i class="fa fa-reorder"></i> para ordenar los grados de acuerdo al orden acad&eacute;mico.</p>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th width="10"><i class="fa fa-sort-numeric-asc"></i> </th>
+                            <th width="10"><check-all></check-all></th>
+                            <th>Nombre</th>
+                            <th>Descripci&oacute;n</th>
+                        </tr>
+                        </thead>
+                        <tbody ui-sortable="sortableOptions" ng-model="y_data">
+                        <tr dir-paginate="y in y_data | itemsPerPage: per_page" total-items="pagination.total" current-page="pagination.current_page">
+                            <td><i class="fa fa-reorder draggable"></i></td>
+                            <td><input type="checkbox" class="chk" name="y_id" value="{{ y.id }}"></td>
+                            <td><a ui-sref="catalogs.yearupdate({id: y.id})">{{ y.name }}</a></td>
+                            <td>{{ y.description }}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <dir-pagination-controls on-page-change="get(newPageNumber)"></dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

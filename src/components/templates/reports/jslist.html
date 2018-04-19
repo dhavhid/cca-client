@@ -1,0 +1,141 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Reportes</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li class="active"><strong>Reportes</strong></li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>Reportes</h5>
+    </div>
+    <div class="ibox-content">
+        <form name="frmReport" ng-model="JSReports" novalidate>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label>Reporte <span>*</span></label>
+                        <select class="form-control" name="reportUri" ng-model="JSReports.reportUri" ng-change="getReportParams()" ng-options="option.uri as option.label for option in reportList" required></select>
+                        <p class="help-block" ng-if="frmReport.reportUri.$error.required">Por favor seleccione el reporte que desea generar.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="hr-line-dashed"></div>
+                </div>
+            </div>
+        
+            <div class="row" ng-if="JSReports.hasOwnProperty('ENROLLMENT_YEAR_ID')">
+                <div class="col-xs-12">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label>A&ntilde;o Escolar <span>*</span></label>
+                        <select class="form-control" name="ENROLLMENT_YEAR_ID" ng-model="JSReports.ENROLLMENT_YEAR_ID" ng-options="option.id as option.name for option in filters.ENROLLMENT_YEAR_ID" required></select>
+                        <p class="help-block" ng-if="frmReport.ENROLLMENT_YEAR_ID.$error.required">El a&ntilde;o escolar es obligatorio</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="JSReports.hasOwnProperty('YEAR_ID')">
+                <div class="col-xs-12">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label>Grado <span>*</span></label>
+                        <select class="form-control" name="YEAR_ID" ng-model="JSReports.YEAR_ID" ng-options="option.id as option.name for option in filters.YEAR_ID" ng-change="getFees();" required></select>
+                        <p class="help-block" ng-if="frmReport.YEAR_ID.$error.required">El grado es obligatorio</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="JSReports.hasOwnProperty('SECTION_ID')">
+                <div class="col-xs-12">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label>Secci&oacute;n <span>*</span></label>
+                        <select class="form-control" name="SECTION_ID" ng-model="JSReports.SECTION_ID" ng-options="option.id as option.name for option in filters.SECTION_ID" required></select>
+                        <p class="help-block" ng-if="frmReport.SECTION_ID.$error.required">La secci&oacute;n es obligatoria</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="JSReports.hasOwnProperty('FEE_ID')">
+                <div class="col-xs-12">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label>Colegiatura <span>*</span></label>
+                        <select class="form-control" name="FEE_ID" ng-model="JSReports.FEE_ID" ng-options="option.id as option.name for option in filters.FEE_ID" required></select>
+                        <p class="help-block" ng-if="frmReport.FEE_ID.$error.required">La colegiatura es obligatoria</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="JSReports.hasOwnProperty('FEE_DATE')">
+                <div class="col-xs-12">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label>Colegiatura <span>*</span></label>
+                        <select class="form-control" name="FEE_DATE" ng-model="JSReports.FEE_DATE" ng-options="option.fee_date as option.name for option in filters.FEE_DATE" required></select>
+                        <p class="help-block" ng-if="frmReport.FEE_DATE.$error.required">La colegiatura es obligatoria</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row" ng-if="JSReports.hasOwnProperty('PAYMENT_TYPE_ID')">
+                <div class="col-xs-12">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label>Tipo de Pago <span>*</span></label>
+                        <select chosen multiple class="form-control" name="PAYMENT_TYPE_ID" ng-model="JSReports.PAYMENT_TYPE_ID" ng-options="option.id as option.name for option in filters.PAYMENT_TYPE_ID" required></select>
+                        <p class="help-block" ng-if="frmReport.PAYMENT_TYPE_ID.$error.required">El tipo de pago es obligatorio</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6" ng-if="JSReports.hasOwnProperty('START_DATE')">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label>Fecha Desde <span>*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            <input type="text" name="START_DATE" ng-model="JSReports.START_DATE" placeholder="dd/mm/aaaa" class="form-control" tabindex="5" required>
+                        </div>
+                        <span class="label label-primary">dia/mes/a&ntilde;o</span>
+                        <p class="help-block" ng-if="frmReport.START_DATE.$error.required">La fecha de inicio de per&iacute;odo es obligatorio</p>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6" ng-if="JSReports.hasOwnProperty('END_DATE')">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label>Fecha Hasta <span>*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            <input type="text" name="END_DATE" ng-model="JSReports.END_DATE" placeholder="dd/mm/aaaa" class="form-control" tabindex="5" required>
+                        </div>
+                        <span class="label label-primary">dia/mes/a&ntilde;o</span>
+                        <p class="help-block" ng-if="frmReport.END_DATE.$error.required">La fecha de fin de per&iacute;odo es obligatorio</p>
+                    </div>
+                </div>
+                <div class="col-xs-12" ng-if="JSReports.hasOwnProperty('FECHA_DE_PAGO')">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label>Fecha de Pago <span>*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                            <input type="text" name="FECHA_DE_PAGO" ng-model="JSReports.FECHA_DE_PAGO" placeholder="dd/mm/aaaa" class="form-control" tabindex="5" required>
+                        </div>
+                        <span class="label label-primary">dia/mes/a&ntilde;o</span>
+                        <p class="help-block" ng-if="frmReport.FECHA_DE_PAGO.$error.required">La fecha de pago es obligatoria</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group" show-errors="{showSuccess: true}">
+                        <label>Formato del Reporte <span>*</span></label>
+                        <select class="form-control" name="extension" ng-model="JSReports.extension" ng-options="option.id as option.name for option in extensions"></select>
+                        <p class="help-block" ng-if="frmReport.extension.$error.required">El formato del reporte es obligatorio</p>
+                    </div>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary btn-save" ng-click="askForReport();"><i class="fa fa-play"></i> Generar</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<br />

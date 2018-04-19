@@ -1,0 +1,85 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Alumnos</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a href="/catalogs">Personas</a></li>
+            <li class="active">Alumnos</li>
+        </ol>
+    </div>
+</div>
+<br />
+<action-buttons></action-buttons>
+<div app-message></div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <form>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Filtrar por A&ntilde;o Escolar:</label>
+                                <select name="schoolyear" class="form-control" ng-model="schoolyear" ng-change="get(1);" ng-options="option.id as option.name for option in schoolyears"></select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Filtrar por grado:</label>
+                                <select name="year" class="form-control" ng-model="year" ng-change="get(1);">
+                                    <option value=""></option>
+                                    <option ng-repeat="option in years" value="{{ option.id }}">{{ option.name }}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="control-label">Filtrar por secci&oacute;n:</label>
+                                <select name="section_id" class="form-control" ng-model="section_id" ng-change="get(1);">
+                                    <option value=""></option>
+                                    <option ng-repeat="option in sections" value="{{ option.id }}">{{ option.name }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <br />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th width="10"><check-all></check-all></th>
+                                    <th width="13">C&oacute;digo</th>
+                                    <th width="47">Nombre</th>
+                                    <th width="10">Grado</th>
+                                    <th width="10">Secci&oacute;n</th>
+                                    <th width="10">Tel&eacute;fono</th>
+                                    <!--<th width="17">Direcci&oacute;n</th>-->
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr dir-paginate="al in data | itemsPerPage: per_page" total-items="pagination.total" current-page="pagination.current_page">
+                                    <td><input type="checkbox" class="chk" name="sy_id" value="{{ al.enrollment_id }}"></td>
+                                    <td><a ui-sref="people.studentsupdate({id: al.id})">{{ al.code }}</a></td>
+                                    <td><a ui-sref="people.studentsupdate({id: al.id})">{{ al.lastname }}, {{ al.firstname }} <span ng-if="al.middlename.length > 0"> {{ al.middlename }}</span></a></td>
+                                    <td>{{ al.year_name }}</td>
+                                    <td>{{ al.section_name }}</td>
+                                    <td>{{ al.phone }}</td>
+                                    <!--<td>{{ al.address1 }}<span ng-if="al.address2.length > 0"> {{ al.address2 }}</span>, {{ al.city }}, {{ al.state }}</td>-->
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <dir-pagination-controls on-page-change="get(newPageNumber)"></dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

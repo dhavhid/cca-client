@@ -1,0 +1,94 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Campos Personalizados</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a ui-sref="catalogs">Cat&aacute;logos</a></li>
+            <li><a ui-sref="catalogs.customfields">Campos Personalizados</a></li>
+            <li class="active">{{ activeTitle }}</li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>{{ activeTitle }} Campo Personalizado</h5>
+    </div>
+    <div class="ibox-content">
+        <div app-forminfo></div>
+        <div app-message></div>
+        <form name="frmCustomfield" ng-model="Customfield" class="form-horizontal" novalidate>
+            <input type="hidden" name="name" ng-model="Customfield.name">
+            <multiple-person-type name="persontypeid" person-type="types" ng-model="persontypeid"></multiple-person-type>
+            <div class="form-group" show-errors="{showSuccess: true}">
+                <label class="col-sm-3 control-label">Etiqueta <span>*</span></label>
+                <div class="col-sm-9">
+                    <input type="text" name="label" ng-model="Customfield.label" class="form-control" required>
+                    <small class="text-navy">Este texto aparecer&aacute; al lado del campo cuando sea desplegado.</small>
+                    <p class="help-block" ng-if="frmCustomfield.label.$error.required">La etiqueta es obligatoria</p>
+                </div>
+            </div>
+            <div class="form-group" show-errors="{showSuccess: true}">
+                <label class="col-sm-3 control-label">Tipo de Campo <span>*</span></label>
+                <div class="col-sm-9">
+                    <select name="type" ng-model="Customfield.type" class="form-control" required>
+                        <option value=""></option>
+                        <option value="text">Texto</option>
+                        <option value="textarea">Texto Largo</option>
+                        <!--<option value="wysiwyg">Editor HTML</option>-->
+                        <option value="number">N&uacute;mero</option>
+                        <option value="tel">Tel&eacute;fono</option>
+                        <option value="date">Fecha</option>
+                        <!--<option value="time">Hora</option>
+                        <option value="datetime">Fecha y Hora</option>-->
+                        <option value="email">E-Mail</option>
+                        <option value="url">Url</option>
+                        <option value="select">Lista</option>
+                        <option value="checkbox">M&uacute;ltiple Selecci&oacute;n</option>
+                        <option value="radio">Selecci&oacute;n Simple</option>
+                    </select>
+                    <p class="help-block" ng-if="frmCustomfield.type.$error.required">El tipo de campo es obligatorio</p>
+                </div>
+            </div>
+            <div class="form-group" show-errors="{showSuccess: true}">
+                <label class="col-sm-3 control-label">Orden Correlativo <span>*</span></label>
+                <div class="col-sm-9">
+                    <input-number ng-model="Customfield.order" name="order" required></input-number>
+                    <small class="text-navy">Es un n&uacute;mero mayor que 0 e indica el orden en que aparecer&aacute; en el formulario.</small>
+                    <p class="help-block" ng-if="frmCustomfield.order.$error.required">El n&uacute;mero de orden correlativo es obligatorio. Debe ser un n&uacute;mero mayor que 0.</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">
+                    Campo Obligatorio?<br />
+                    <small class="text-navy">Indica si es el campo es obligatorio.</small>
+                </label>
+                <div class="col-sm-9">
+                    <input type="checkbox" ng-model="Customfield.required" value="1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Posibles Valores</label>
+                <div class="col-sm-9">
+                    <textarea rows="5" cols="100" ng-model="Customfield.values" class="form-control"></textarea>
+                    <small class="text-navy">Escriba los posibles valores separados por coma.</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">Formato</label>
+                <div class="col-sm-9">
+                    <input type="text" ng-model="Customfield.pattern" class="form-control">
+                    <small class="text-navy">Escriba el formato que debe tener el valor del campo. Solo usuarios avanzados.</small>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <div class="col-sm-9 col-sm-offset-3">
+                    <button type="button" class="btn btn-primary" ng-click="save();"><i class="fa fa-save"></i> Guardar</button>
+                    <a ui-sref="catalogs.customfields" class="btn btn-default">Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<br /><br />

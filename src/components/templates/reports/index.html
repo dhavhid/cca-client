@@ -1,0 +1,144 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Reportes</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li class="active"><strong>Reportes</strong></li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>Reportes</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="row">
+            <div class="col-xs-12 col-sm-3">
+                <div class="form-group">
+                    <label>A&ntilde;o Escolar</label>
+                    <select chosen class="form-control" name="schoolyear" ng-model="schoolyear" ng-change="listReports()" ng-options="option.id as option.name for option in schoolyears"></select>
+                </div>    
+            </div>
+            <div class="col-xs-12 col-sm-8">
+                <div class="form-group">
+                    <label>Reporte</label>
+                    <select chosen class="form-control" name="selectedReport" ng-model="selectedReport" ng-change="display()" ng-options="option.id as option.name for option in reports"></select>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-1">
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <br />
+                    <button class="btn btn-primary" type="button" ng-click="editReport();" title="Editar Reporte"><i class="fa fa-pencil"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="hr-line-dashed"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-xs-offset-6" style="text-align: right;">
+                <div class="btn-group btn-group-sm" role="group">
+                    <button type="button" class="btn btn-primary" ng-click="getExcel()">
+                        <i class="fa fa-file-excel-o"></i> Exportar a Excel
+                    </button>
+                    <button type="button" class="btn btn-default" ng-click="display()">
+                        <i class="fa fa-refresh"></i> Refrescar
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <h2>{{ Report.report.name }}</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="table-responsive table-content">
+                    <table class="table table-condensed table-bordered table-hover table-striped">
+                        <thead ng-if="Report.report.layout == 'portrait'">
+                            <tr>
+                                <th ng-repeat="header in Report.report.columns" width="{{ table[header].width }}px">
+                                    {{ table[header].text }}
+                                </th>
+                                <th ng-if="Report.report.format == 'chart'" ng-repeat="header in Report.report.groupingFields" width="{{ table[header].width }}px">
+                                    {{ table[header].text }}
+                                </th>
+                            </tr>
+                        </thead>
+                        <thead ng-if="Report.report.layout == 'landscape'">
+                            <tr>
+                                <th ng-repeat="header in Report.report.columns" width="{{ table[header].width }}px">
+                                    {{ table[header].text }}
+                                </th>
+                                <th ng-repeat="header in Report.report.groupingFields" width="35px" style="word-wrap: break-word;">
+                                    {{ header }}
+                                </th>
+                            </tr>
+                        </thead>
+                        <!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+                        <tbody ng-if="grouped && Report.report.format == 'grid' && Report.report.layout == 'portrait'" ng-repeat="record in data">
+                            <tr>
+                                <th colspan="{{ colspan }}">
+                                    <span ng-repeat="group in Report.report.groupingFields">{{ record[group] }}<span ng-if="!$last"> /</span> </span>
+                                </th>
+                            </tr>
+                            <tr ng-repeat="d in record.data">
+                                <td ng-repeat="column in Report.report.columns">
+                                    <span ng-if="table[column].type == 'currency'" class="pull-right">{{ d[column] | currency:"$ ":2 }}</span>
+                                    <span ng-if="table[column].type == 'date'" class="text-center">{{ d[column] | date:'dd-MM-yyyy' }}</span>
+                                    <span ng-if="table[column].type != 'currency' && table[column].type != 'date'">{{ d[column] }}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody ng-if="!grouped && Report.report.format == 'grid' && Report.report.layout == 'portrait'">
+                            <tr ng-repeat="d in data">
+                                <td ng-repeat="column in Report.report.columns">
+                                    <span ng-if="table[column].type == 'currency'" class="pull-right">{{ d[column] | currency:"$ ":2 }}</span>
+                                    <span ng-if="table[column].type == 'date'" class="text-center">{{ d[column] | date:'dd-MM-yyyy' }}</span>
+                                    <span ng-if="table[column].type != 'currency' && table[column].type != 'date'">{{ d[column] }}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <!-- Chart presentation -->
+                        <tbody ng-if="Report.report.format == 'chart' && Report.report.layout == 'portrait'" ng-repeat="d in data">
+                            <tr ng-repeat="dd in d.data">
+                                <td ng-repeat="column in Report.report.columns">
+                                    <span ng-if="table[column].type == 'currency'" class="pull-right">{{ dd[column] | currency:"$ ":2 }}</span>
+                                    <span ng-if="table[column].type == 'date'" class="text-center">{{ dd[column] | date:'dd-MM-yyyy' }}</span>
+                                    <span ng-if="table[column].type != 'currency' && table[column].type != 'date'">{{ dd[column] }}</span>
+                                </td>
+                                <td rowspan="{{ colspan }}" ng-repeat="column in Report.report.groupingFields">
+                                    <span ng-if="table[column].type == 'currency'" class="pull-right">{{ d[column] | currency:"$ ":2 }}</span>
+                                    <span ng-if="table[column].type == 'date'" class="text-center">{{ d[column] | date:'dd-MM-yyyy' }}</span>
+                                    <span ng-if="table[column].type != 'currency' && table[column].type != 'date'">{{ d[column] }}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <!-- --------------------------------------------------------------------------------------------------------------------------------- -->
+                        <tbody ng-if="Report.report.layout == 'landscape'">
+                            <tr ng-repeat="dd in data">
+                                <td ng-repeat="column in Report.report.columns">
+                                    <span ng-if="table[column].type == 'currency'" class="pull-right">{{ dd[column] | currency:"$ ":2 }}</span>
+                                    <span ng-if="table[column].type == 'date'" class="text-center">{{ dd[column] | date:'dd-MM-yyyy' }}</span>
+                                    <span ng-if="table[column].type != 'currency' && table[column].type != 'date'">{{ dd[column] }}</span>
+                                </td>
+                                <td ng-repeat="column in Report.report.groupingFields" ng-class="{'filled-cell': dd.group[column]}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="progress progress-striped active">
+                    <div style="width: 100%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="100" role="progressbar" class="progress-bar progress-bar-primary">
+                        Cargando....
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br />

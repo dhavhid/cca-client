@@ -1,0 +1,54 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Planes de Pago</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a href="/catalogs">Cat&aacute;logos</a></li>
+            <li><a ui-sref="catalogs.plan">Planes de Pago</a> </li>
+            <li><a ui-sref="catalogs.planupdate({id: plan.id})">{{ plan.name }}</a> </li>
+            <li class="active"><strong>Colegiaturas</strong></li>
+        </ol>
+    </div>
+</div>
+<br />
+<action-buttons></action-buttons>
+<div app-message></div>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th width="10"><i class="fa fa-sort-numeric-asc"></i> </th>
+                            <th width="10"><check-all></check-all></th>
+                            <th>Nombre</th>
+                            <th>Valor</th>
+                            <th>Fecha &Uacute;ltima de Pago</th>
+                            <th>Obligatorio</th>
+                        </tr>
+                        </thead>
+                        <tbody ui-sortable="sortableOptions" ng-model="fees">
+                        <tr dir-paginate="fee in fees | itemsPerPage: per_page" total-items="pagination.total" current-page="pagination.current_page">
+                            <td><i class="fa fa-reorder draggable"></i></td>
+                            <td><input type="checkbox" class="chk" name="sy_id" value="{{ fee.id }}"></td>
+                            <td><a ui-sref="catalogs.feeupdate({id: plan.id, feeid: fee.id})">{{ fee.name }}</a></td>
+                            <td>{{ fee.value | currency:"US $":2 }}</td>
+                            <td>{{ fee.feeDate | date:"dd-MM-yyyy" }}</td>
+                            <td><span class="label label-primary" ng-if="fee.isMandatory">Obligatorio</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <dir-pagination-controls on-page-change="get(newPageNumber)"></dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<br /><br />
+<br />

@@ -1,0 +1,353 @@
+<style>
+.cropArea {
+    background: #E4E4E4;
+    overflow: hidden;
+    width:500px;
+    min-width: 100%;
+    height:350px;
+}
+</style>
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Usuarios</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a ui-sref="people">Personas</a></li>
+            <li><a ui-sref="people.users">Usuarios</a></li>
+            <li ng-if="Person.id">{{ Person.firstname }} {{ Person.lastname }}</li>
+            <li class="active"><strong>{{ activeTitle }} Usuario</strong></li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="tabs-container">
+    <ul class="nav nav-tabs">
+        <li class="active"><a>Perfil</a></li>
+        <li><a ui-sref="people.expedient({id: Person.id})">Expediente</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="person">
+            <div class="panel-body">
+                <div app-forminfo></div>
+                <div app-message></div>
+                <form name="frmPerson" ng-model="Person" novalidate>
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Datos Generales</legend>
+                        <div class="row">
+                            <div class="col-md-3 col-sm-4 col-xs-12">
+                                <div style="width:100%; height:180px; background-color:#f1f1f1f1; display: block; text-align:center;">
+                                    <img alt="100%x180" id="selectedImg" src="{{ profilePicturePlaceholder }}" height="180">
+                                </div>
+                                <button type="button" class="btn btn-default" style="width:100%;" ng-click="selectPicture();"><i class="fa fa-camera"></i> {{photoLabel}}</button>
+                            </div>
+                            <div class="col-md-9 col-sm-8 col-xs-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group" show-errors="{showSuccess: true}">
+                                            <label class="control-label">Tipo de Usuario <span>*</span></label>
+                                            <select class="form-control" name="person_type_id" ng-model="Person.person_type_id" ng-change="getCustomFields()" ng-options="type.id as type.name for type in persontypes" required></select>
+                                            <p class="help-block" ng-if="frmPerson.person_type_id.$error.required">El tipo de usuario es obligatorio</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-7 col-xs-12">
+                                        <div class="form-group" show-errors="{showSuccess: true}">
+                                            <label class="control-label">Primer Nombre <span>*</span></label>
+                                            <input type="text" name="firstname" ng-model="Person.firstname" class="form-control" required>
+                                            <p class="help-block" ng-if="frmPerson.firstname.$error.required">El primer nombre es obligatorio</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Segundo Nombre</label>
+                                            <input type="text" name="middlename" ng-model="Person.middlename" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group" show-errors="{showSuccess: true}">
+                                            <label class="control-label">Apellidos <span>*</span></label>
+                                            <input type="text" name="lastname" ng-model="Person.lastname" class="form-control" required>
+                                            <p class="help-block" ng-if="frmPerson.lastname.$error.required">El apellido es obligatorio</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="form-group" show-errors="{showSuccess: true}">
+                                            <label class="control-label">G&eacute;nero <span>*</span></label>
+                                            <select name="gender" ng-model="Person.gender" class="form-control" required>
+                                                <option value=""></option>
+                                                <option value="M">Masculino</option>
+                                                <option value="F">Femenino</option>
+                                            </select>
+                                            <p class="help-block" ng-if="frmPerson.gender.$error.required">El g&eacute;nero es obligatorio</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Fecha de Nacimiento</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                <input type="text" name="date_of_birth" ng-model="Person.date_of_birth" placeholder="dd/mm/aaaa" class="form-control">
+                                            </div>
+                                            <span class="label label-primary">dia/mes/a&ntilde;o</span>
+                                            <p class="date_of_birth-error-message" style="display:none;">La fecha de nacimiento debe tener el formato: dia/mes/a&ntilde;o.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- end of right column of photo -->
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Contacto</legend>
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group" show-errors="{showSuccess: true}">
+                                    <label class="control-label">Ciudad <span>*</span></label>
+                                    <input type="text" name="city" ng-model="Person.city" class="form-control" required>
+                                    <p class="help-block" ng-if="frmPerson.city.$error.required">La ciudad es obligatoria</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group" show-errors="{showSuccess: true}">
+                                    <label class="control-label">Departamento <span>*</span></label>
+                                    <select name="state" class="form-control" ng-model="Person.state" required>
+                                        <option value=""></option>
+                                        <option ng-repeat="departamento in departamentos" value="{{ departamento }}">{{ departamento }}</option>
+                                    </select>
+                                    <p class="help-block" ng-if="frmPerson.state.$error.required">El departamento es obligatorio</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group" show-errors="{showSuccess: true}">
+                                    <label class="control-label">Direcci&oacute;n<span>*</span></label>
+                                    <input type="text" name="address1" ng-model="Person.address1" class="form-control" required>
+                                    <p class="help-block" ng-if="frmPerson.address1.$error.required">La direcci&oacute;n es obligatoria</p>
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="address2" ng-model="Person.address2" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label">Correo Electr&oacute;nico</label>
+                                    <input type="email" name="email" ng-model="Person.email" class="form-control">
+                                    <p class="help-block" ng-if="frmPerson.email.$error.email">El correo electr&oacute;nico no es v&aacute;lido</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label">Tel&eacute;fono</label>
+                                    <input-phone name="phone" ng-model="Person.phone"></input-phone>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Informaci&oacute;n Adicional</legend>
+                        <div class="row" ng-repeat="input in customfields">
+                            <div class="col-md-12">
+                                <div class="form-group customfield-group" ng-class="{'has-error': frmPerson[input.name].$invalid && input.required}">
+                                    <label class="control-label">{{ input.label }} <span ng-if="input.required">*</span></label>
+                                    <div ng-if="input.type == 'text'">
+                                        <input-text name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required" format="{{ input.pattern }}"></input-text>
+                                    </div>
+                                    <div ng-if="input.type == 'textarea'">
+                                        <input-text-long name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required"></input-text-long>
+                                    </div>
+                                    <div ng-if="input.type == 'number'">
+                                        <input-number name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required"></input-number>
+                                    </div>
+                                    <div ng-if="input.type == 'tel'">
+                                        <input-phone name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required"></input-phone>
+                                    </div>
+                                    <div ng-if="input.type == 'date'">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                            <input type="text" input-type="date" name="{{ input.name }}" ng-model="CustomFields[input.name]" placeholder="dd/mm/aaaa" class="form-control" ng-required="input.required">
+                                        </div>
+                                        <span class="label label-primary">dia/mes/a&ntilde;o</span>
+                                    </div>
+                                    <div ng-if="input.type == 'email'">
+                                        <input-email name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required"></input-email>
+                                    </div>
+                                    <div ng-if="input.type == 'url'">
+                                        <input-url name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required"></input-url>
+                                    </div>
+                                    <div ng-if="input.type == 'select'">
+                                        <input-list name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required" options="input.values"></input-list>
+                                    </div>
+                                    <div ng-if="input.type == 'checkbox'">
+                                        <input-multiple-options name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required" options="input.values"></input-multiple-options>
+                                    </div>
+                                    <div ng-if="input.type == 'radio'">
+                                        <input-single-option name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required" options="input.values"></input-single-option>
+                                    </div>
+                                    <p class="help-block" ng-if="frmPerson[input.name].$error.required">El g&eacute;nero es obligatorio</p>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="checkbox">
+                                <label class="control-label">
+                                    <input type="checkbox" value="1" ng-model="createuser" name="createuser">
+                                    <strong ng-if="User.rol_id == undefined">Crear usuario con acceso al sistema</strong>
+                                    <strong ng-if="User.rol_id">Cambiar contrase&ntilde;a</strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <fieldset ng-if="createuser == 1">
+                        <legend><i class="fa fa-pencil"></i> Credenciales</legend>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Rol <span>*</span></label>
+                                    <select class="form-control" name="rol_id" ng-model="User.rol_id" ng-change="validateRol()" ng-options="type.id as type.name for type in roles"></select>
+                                    <p class="help-block" ng-if="invalid_rol == 1">El rol es obligatorio</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Contrase&ntilde;a <span>*</span></label>
+                                    <input type="password" name="password" ng-model="User.password" ng-change="validatePass()" class="form-control">
+                                    <p class="help-block" ng-if="invalid_pass == 1">La contrase&ntilde;a es obligatoria.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Repetir Contrase&ntilde;a <span>*</span></label>
+                                    <input type="password" name="password2" ng-model="User.password2" ng-change="validatePass()" class="form-control">
+                                    <p class="help-block" ng-if="invalid_pass == 1">La contrase&ntilde;a no coincide.</p>
+                                    <p>La contrase&ntilde;a debe contener n&uacute;meros y letras. Si no desea que este usuario tenga acceso al sistema deje la contrase&ntilde;a en blanco.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary btn-save" ng-click="save();"><i class="fa fa-save"></i> Guardar</button>
+                        <a ui-sref="people.users" class="btn btn-default">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br /><br />
+<br />
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Posible Duplicado</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="alert alert-info" role="alert">
+                            Se ha detectado posibles duplicados por favor confirme si desea vincular al alumno uno de los registros ya existentes o desea agregar el nuevo registro. D&eacute; click en el nombre del registro que desea vincular al alumno.
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-primary" style="width: 100%;" ng-click="save(1);">FORZAR GUARDAR</button>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-condensed table-hover">
+                                <thead>
+                                <tr>
+                                    <th width="10%"></th>
+                                    <th width="20%">Nombre</th>
+                                    <th width="30%">Direcci&oacute;n</th>
+                                    <th width="40%">Informaci&oacute;n Adicional</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="item in duplicates">
+                                    <td><input type="button" value="Vincular" class="btn btn-default" ng-click="addRelative(item.id);"></td>
+                                    <td>{{ item.firstname }} <span ng-if="item.middlename">{{ item.middlename }}</span> {{ item.lastname }}</td>
+                                    <td>{{ item.address1 }}<span ng-if="item.address2">, {{ item.address2 }}</span>, {{ item.city }}, {{ item.state }}</td>
+                                    <td>
+                                        <ul>
+                                            <li ng-repeat="customfield in item.customfields">
+                                                {{ customfield.label }}: {{ customfield.value }}
+                                            </li>
+                                            <li>Tel&eacute;fono: {{ item.phone }}</li>
+                                            <li>Email: {{ item.email }}</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!-- -------------------------------------------------------------------------------------------------------------------------- -->
+<div class="modal fade" tabindex="-1" role="dialog" id="myModalPicture">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Foto de Perfil</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label class="label-control">Seleccione una im&aacute;gen</label>
+                            <input type="file" class="form-control" id="fileInput">
+                            <span class="label label-primary">La im&aacute;gen debe ser JPG, PNG &oacute; GIF</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="cropArea">
+                            <img-crop result-image-format="image/jpeg" result-image-quality="1.0" result-image="Picture.profileCroppedPicture" image="Picture.profilePicture"></img-crop>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <img ng-src="{{Picture.profileCroppedPicture}}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" ng-click="setPicture();">Aceptar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

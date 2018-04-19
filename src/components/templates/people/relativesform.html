@@ -1,0 +1,255 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Alumnos</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a ui-sref="people">Personas</a></li>
+            <li><a ui-sref="people.students">Alumnos</a></li>
+            <li><a ui-sref="people.studentsupdate({id: Linkto.id})">{{ Linkto.firstname }} {{ Linkto.lastname }}</a></li>
+            <li><a ui-sref="people.studentsrelatives({id: Linkto.id})">Familiares</a></li>
+            <li class="active"><strong>{{ title }}</strong></li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="tabs-container">
+    <ul class="nav nav-tabs">
+        <li><a ui-sref="people.studentsupdate({id: Linkto.id})">Perfil</a></li>
+        <li class="active"><a>Familiares</a></li>
+        <li><a ui-sref="people.studentsenrollment({id: Linkto.id})">Matr&iacute;cula</a></li>
+        <li><a ui-sref="people.studentspayment({id: Linkto.id})">Pagos</a></li>
+        <li><a ui-sref="people.expedient({id: Linkto.id})">Expediente</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="person">
+            <div class="panel-body">
+                <div app-forminfo></div>
+                <div app-message></div>
+                <form name="frmPerson" ng-model="Person" novalidate>
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Datos Generales</legend>
+                        <div class="row">
+                            <div class="col-md-3 col-sm-4 col-xs-12">
+                                <img data-src="holder.js/100%x180" alt="100%x180" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9InllcyI/PjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iMTM0IiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDEzNCAxODAiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiPjwhLS0KU291cmNlIFVSTDogaG9sZGVyLmpzLzEwMCV4MTgwCkNyZWF0ZWQgd2l0aCBIb2xkZXIuanMgMi42LjAuCkxlYXJuIG1vcmUgYXQgaHR0cDovL2hvbGRlcmpzLmNvbQooYykgMjAxMi0yMDE1IEl2YW4gTWFsb3BpbnNreSAtIGh0dHA6Ly9pbXNreS5jbwotLT48ZGVmcz48c3R5bGUgdHlwZT0idGV4dC9jc3MiPjwhW0NEQVRBWyNob2xkZXJfMTUzZWYxMDJkNjMgdGV4dCB7IGZpbGw6I0FBQUFBQTtmb250LXdlaWdodDpib2xkO2ZvbnQtZmFtaWx5OkFyaWFsLCBIZWx2ZXRpY2EsIE9wZW4gU2Fucywgc2Fucy1zZXJpZiwgbW9ub3NwYWNlO2ZvbnQtc2l6ZToxMHB0IH0gXV0+PC9zdHlsZT48L2RlZnM+PGcgaWQ9ImhvbGRlcl8xNTNlZjEwMmQ2MyI+PHJlY3Qgd2lkdGg9IjEzNCIgaGVpZ2h0PSIxODAiIGZpbGw9IiNFRUVFRUUiLz48Zz48dGV4dCB4PSI0MS4wNTQ2ODc1IiB5PSI5NC41Ij4xMzR4MTgwPC90ZXh0PjwvZz48L2c+PC9zdmc+" data-holder-rendered="true" style="height: 180px; width: 100%; display: block;">
+                            </div>
+                            <div class="col-md-9 col-sm-8 col-xs-12">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group" show-errors="{showSuccess: true}">
+                                            <label class="control-label">Parentesco <span>*</span></label>
+                                            <select class="form-control" name="relationshiptype" ng-model="relationship_type_id" ng-options="type.id as type.name for type in types" tabindex="1" required>
+                                            </select>
+                                            <p class="help-block" ng-if="frmPerson.relationship_type_id.$error.required">El parentesco es obligatorio</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-7 col-xs-12">
+                                        <div class="form-group" show-errors="{showSuccess: true}">
+                                            <label class="control-label">Primer Nombre <span>*</span></label>
+                                            <input type="text" name="firstname" ng-model="Person.firstname" class="form-control" tabindex="2" required>
+                                            <p class="help-block" ng-if="frmPerson.firstname.$error.required">El primer nombre es obligatorio</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Segundo Nombre</label>
+                                            <input type="text" name="middlename" ng-model="Person.middlename" class="form-control" tabindex="3">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group" show-errors="{showSuccess: true}">
+                                            <label class="control-label">Apellidos <span>*</span></label>
+                                            <input type="text" name="lastname" ng-model="Person.lastname" class="form-control" tabindex="4" required>
+                                            <p class="help-block" ng-if="frmPerson.lastname.$error.required">El apellido es obligatorio</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="form-group" show-errors="{showSuccess: true}">
+                                            <label class="control-label">G&eacute;nero <span>*</span></label>
+                                            <select name="gender" ng-model="Person.gender" class="form-control" tabindex="5" required>
+                                                <option value=""></option>
+                                                <option value="M">Masculino</option>
+                                                <option value="F">Femenino</option>
+                                            </select>
+                                            <p class="help-block" ng-if="frmPerson.gender.$error.required">El g&eacute;nero es obligatorio</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Fecha de Nacimiento</label>
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                                <input type="text" name="date_of_birth" ng-model="Person.date_of_birth" placeholder="dd/mm/aaaa" class="form-control" tabindex="6">
+                                            </div>
+                                            <span class="label label-primary">dia/mes/a&ntilde;o</span>
+                                            <p class="date_of_birth-error-message" style="display:none;">La fecha de nacimiento debe tener el formato: dia/mes/a&ntilde;o.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- end of right column of photo -->
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Contacto</legend>
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label">Ciudad</label>
+                                    <input type="text" name="city" ng-model="Person.city" class="form-control" tabindex="7">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label">Departamento</label>
+                                    <select name="state" class="form-control" ng-model="Person.state" tabindex="8">
+                                        <option value=""></option>
+                                        <option ng-repeat="departamento in departamentos" value="{{ departamento }}">{{ departamento }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Direcci&oacute;n</label>
+                                    <input type="text" name="address1" ng-model="Person.address1" class="form-control" tabindex="9">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" name="address2" ng-model="Person.address2" class="form-control" tabindex="10">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label">Correo Electr&oacute;nico</label>
+                                    <input-email name="email" ng-model="Person.email" tabindex="11"></input-email>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label">Tel&eacute;fono</label>
+                                    <input-phone name="phone" ng-model="Person.phone" tabindex="12"></input-phone>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend><i class="fa fa-pencil"></i> Informaci&oacute;n Adicional</legend>
+                        <div class="row" ng-repeat="input in customfields">
+                            <div class="col-md-12">
+                                <div class="form-group customfield-group" ng-class="{'has-error': frmPerson[input.name].$invalid && input.required}">
+                                    <label class="control-label">{{ input.label }} <span ng-if="input.required">*</span></label>
+                                    <div ng-if="input.type == 'text'">
+                                        <input-text name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required" format="{{ input.pattern }}" tabindex="{{$index+13}}"></input-text>
+                                    </div>
+                                    <div ng-if="input.type == 'textarea'">
+                                        <input-text-long name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required" tabindex="{{$index+13}}"></input-text-long>
+                                    </div>
+                                    <div ng-if="input.type == 'number'">
+                                        <input-number name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required" tabindex="{{$index+13}}"></input-number>
+                                    </div>
+                                    <div ng-if="input.type == 'tel'">
+                                        <input-phone name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required" tabindex="{{$index+13}}"></input-phone>
+                                    </div>
+                                    <div ng-if="input.type == 'date'">
+                                        <input-date name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required" tabindex="{{$index+13}}"></input-date>
+                                    </div>
+                                    <div ng-if="input.type == 'email'">
+                                        <input-email name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required" tabindex="{{$index+13}}"></input-email>
+                                    </div>
+                                    <div ng-if="input.type == 'url'">
+                                        <input-url name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required" tabindex="{{$index+13}}"></input-url>
+                                    </div>
+                                    <div ng-if="input.type == 'select'">
+                                        <input-list name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required" options="input.values" tabindex="{{$index+13}}"></input-list>
+                                    </div>
+                                    <div ng-if="input.type == 'checkbox'">
+                                        <input-multiple-options name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required" options="input.values" tabindex="{{$index+13}}"></input-multiple-options>
+                                    </div>
+                                    <div ng-if="input.type == 'radio'">
+                                        <input-single-option name="{{ input.name }}" ng-model="CustomFields[input.name]" ng-required="input.required" options="input.values" tabindex="{{$index+13}}"></input-single-option>
+                                    </div>
+                                    <p class="help-block" ng-if="frmPerson[input.name].$error.required">El g&eacute;nero es obligatorio</p>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="hr-line-dashed"></div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-primary" ng-click="save();"><i class="fa fa-save"></i> Guardar</button>
+                        <a ui-sref="people.studentsrelatives({id: Linkto.id})" class="btn btn-default">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<br /><br />
+<br />
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Posible Duplicado</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="alert alert-info" role="alert">
+                            Se ha detectado posibles duplicados por favor confirme si desea vincular al alumno uno de los registros ya existentes o desea agregar el nuevo registro. D&eacute; click en el nombre del registro que desea vincular al alumno.
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <button type="button" class="btn btn-primary" style="width: 100%;" ng-click="save(1);">FORZAR GUARDAR</button>
+                    </div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-condensed table-hover">
+                                <thead>
+                                <tr>
+                                    <th width="10%"></th>
+                                    <th width="20%">Nombre</th>
+                                    <th width="30%">Direcci&oacute;n</th>
+                                    <th width="40%">Informaci&oacute;n Adicional</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="item in duplicates">
+                                    <td><input type="button" value="Vincular" class="btn btn-default" ng-click="addRelative(item.id);"></td>
+                                    <td>{{ item.firstname }} <span ng-if="item.middlename">{{ item.middlename }}</span> {{ item.lastname }}</td>
+                                    <td>{{ item.address1 }}<span ng-if="item.address2">, {{ item.address2 }}</span>, {{ item.city }}, {{ item.state }}</td>
+                                    <td>
+                                        <ul>
+                                            <li ng-repeat="customfield in item.customfields">
+                                                {{ customfield.label }}: {{ customfield.value }}
+                                            </li>
+                                            <li>Tel&eacute;fono: {{ item.phone }}</li>
+                                            <li>Email: {{ item.email }}</li>
+                                        </ul>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

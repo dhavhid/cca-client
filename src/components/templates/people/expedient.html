@@ -1,0 +1,63 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2 ng-if="isStudent">Alumnos</h2>
+        <h2 ng-if="!isStudent">Usuarios</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a ui-sref="people">Personas</a></li>
+            <li ng-if="isStudent"><a ui-sref="people.students">Alumnos</a></li>
+            <li ng-if="!isStudent"><a ui-sref="people.users">Usuarios</a></li>
+            <li ng-if="isStudent"><a ui-sref="people.studentsupdate({id: Person.id})">{{ activeTitle }}</a></li>
+            <li ng-if="!isStudent"><a ui-sref="people.usersupdate({id: Person.id})">{{ activeTitle }}</a></li>
+            <li class="active"><strong>Expediente</strong></li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="tabs-container">
+    <ul class="nav nav-tabs">
+        <li ng-if="isStudent"><a ui-sref="people.studentsupdate({id: Person.id})">Perfil</a></li>
+        <li ng-if="isStudent"><a ui-sref="people.studentsrelatives({id: Person.id})">Familiares</a></li>
+        <li ng-if="isStudent"><a ui-sref="people.studentsenrollment({id: Person.id})">Matr&iacute;cula</a></li>
+        <li ng-if="isStudent"><a ui-sref="people.studentspayment({id: Person.id})">Pagos</a></li>
+        <li ng-if="!isStudent"><a ui-sref="people.usersupdate({id: Person.id})">Perfil</a></li>
+        <li class="active"><a>Expediente</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="relatives">
+            <div class="panel-body">
+                <action-buttons></action-buttons>
+                <div app-message></div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <fieldset>
+                            <legend>Expediente</legend>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th width="10"><check-all></check-all></th>
+                                        <th width="15%">Fecha</th>
+                                        <th width="20%">Incidente</th>
+                                        <th width="15%">Lugar</th>
+                                        <th>Descripci&oacute;n</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="expedient in expedients">
+                                        <td><input type="checkbox" class="chk" name="sy_id" value="{{ expedient.id }}"></td>
+                                        <td><a ui-sref="people.expedientupdate({personId:expedient.personId, id:expedient.id})">{{ expedient.dateOfEvent | date:"dd/MM/yyyy" }}</a></td>
+                                        <td><a ui-sref="people.expedientupdate({personId:expedient.personId, id:expedient.id})">{{ expedient.subject }}</a></td>
+                                        <td>{{ expedient.location }}</td>
+                                        <td>{{ expedient.descriptionNoHtml | limitTo:150 }} ...</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

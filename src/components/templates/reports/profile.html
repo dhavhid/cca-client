@@ -1,0 +1,100 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <h2>Reportes</h2>
+        <ol class="breadcrumb">
+            <li><a href="/"><span><i class="fa fa-home"></i></span></a></li>
+            <li><a ui-sref="catalogs">Reportes</a></li>
+            <li class="active"><strong>{{ title }}</strong></li>
+        </ol>
+    </div>
+</div>
+<br />
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>Reporte de Perfil</h5>
+    </div>
+    <div class="ibox-content">
+    	<div class="row">
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+			    <div class="table-responsive">
+			        <table class="table">
+			            <thead>
+			                <tr>
+			                    <th colspan="2">Datos Generales</th>
+			                </tr>
+			            </thead>
+			            <tbody>
+			                <tr>
+			                    <td rowspan="3" width="150px" align="center">
+			                    	<img ng-if="!person.profilePicture" src="assets/images/logocca.png" width="125px" class="img-thumbnail" alt="image">
+                        			<img ng-if="person.profilePicture" ng-src="{{ person.profilePicture }}" width="125px" class="img-thumbnail" alt="image">
+			                    </td>
+			                    <td>
+			                    	<p><strong>{{ person.firstname }}<span ng-if="person.middlename"> {{ person.middlename }}</span> {{ person.lastname }}</strong> <small><em>({{ person.code }})</em></small></p>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td>
+			                    	<p>{{ person.address1 }}<span ng-if="person.address2">, {{ person.address2 }}</span>, </p>
+			                    	<p>{{ person.city }}, {{person.state}}</p>
+			                    	<p>Tel. <strong>{{ person.phone }}</strong></p>
+			                    	<p ng-if="person.email">{{ person.email }}</p>
+			                    </td>
+			                </tr>
+			                <tr>
+			                    <td>
+			                    	<ul>
+			                    		<li ng-repeat="customfield in person.customfields" style="list-style: square; margin-left: 0px;">
+			                    			<p style="margin: 0px;">{{ customfield.value }}</p>
+			                    			<p style="margin: 0 0 5px 0;"><small><em>{{ customfield.label }}</em></small></p>
+			                    		</li>
+			                    	</ul>
+			                    </td>
+			                </tr>
+			            </tbody>
+			        </table>
+			    </div>
+			    <hr class="hidden-xs">
+			    <div class="table-responsive">
+			        <table class="table">
+			            <thead>
+			                <tr>
+			                    <th>Matricula</th>
+			                </tr>
+			            </thead>
+			            <tbody>
+			                <tr>
+			                    <td>{{ enrollment.enrollmentYear }}, <strong>{{ enrollment.year_name }}</strong><span ng-if="enrollment.section_name">, {{ enrollment.section_name }}</span></td>
+			                </tr>
+			                <tr>
+			                    <td>
+			                    	<p>Padre Responsable: {{ enrollment.parent.firstname }} {{ enrollment.parent.lastname }}</p>
+			                    	<p ng-if="enrollment.parent.phone || enrollment.parent.email"><span ng-if="enrollment.parent.phone">Tel. {{ enrollment.parent.phone }}</span><span ng-if="enrollment.parent.email"> <a href="mailto:{{ enrollment.parent.email }}">{{enrollment.parent.email}}</a></span></p>
+			                   	</td>
+			                </tr>
+			            </tbody>
+			        </table>
+			    </div>
+			    <hr>
+			    <div class="table-responsive">
+			        <table class="table">
+			            <thead>
+			                <tr>
+			                    <th>Familiares </th>
+			                </tr>
+			            </thead>
+			            <tbody>
+			                <tr>
+			                    <td>Cell 1</td>
+			                </tr>
+			                <tr>
+			                    <td>Cell 3</td>
+			                </tr>
+			            </tbody>
+			        </table>
+			    </div>
+			</div>
+		</div><!-- end of row of content -->
+    </div>
+</div>   
+<br />     
